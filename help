@@ -1,0 +1,297 @@
+<div>
+   Name: <input type="text" id='txt_name'> <br>
+   Salary: <input type="text" id='txt_salary'> <br>
+   Email: <input type="text" id='txt_email'> <br>
+   <input type="button" id="btn_submit" value="Submit" onclick="insertNewEmployee();">
+</div>
+<table id='empTable' border='1'>
+   <thead>
+      <tr>
+         <th>Name</th>
+         <th>Salary</th>
+         <th>Email</th>
+      </tr>
+   </thead>
+   <tbody></tbody>
+</table>
+
+
+
+
+<?php
+
+include "config.php";
+
+$request = 2;
+
+// Read $_GET value
+if (isset($_GET['request'])) {
+   $request = $_GET['request'];
+}
+
+// Fetch records 
+if ($request == 1) {
+
+   // Select record 
+   $sql = "SELECT * FROM employee";
+   $employeeData = mysqli_query($con, $sql);
+
+   $response = array();
+   while ($row = mysqli_fetch_assoc($employeeData)) {
+      $response[] = array(
+         "id" => $row['id'],
+         "emp_name" => $row['emp_name'],
+         "salary" => $row['salary'],
+         "email" => $row['email'],
+      );
+   }
+
+   echo json_encode($response);
+   exit;
+}
+
+// Insert record
+if ($request == 2) {
+
+   // Read POST data
+   $data = json_decode(file_get_contents("php://input"));
+
+   $name = $data->name;
+   $salary = $data->salary;
+   $email = $data->email;
+
+   // Insert record
+   $sql = "insert into employee(emp_name,salary,email) values('" . $name . "'," . $salary . ",'" . $email . "')";
+   if (mysqli_query($con, $sql)) {
+      echo 1;
+   } else {
+      echo 0;
+   }
+
+   exit;
+}
+
+//post handle
+
+// $.ajax({
+//    type: "POST",
+//    url: "submission.php",
+//    data: {
+//    firstName: firstName,
+//    lastName: lastName,
+//    email: email,
+//    message: message
+//    },
+//    cache: false,
+//    success: function(data) {
+//    alert(data);
+//    },
+//    error: function(xhr, status, error) {
+//    console.error(xhr);
+//    }
+//    });
+
+
+
+
+
+?>
+
+<script>
+   loadEmployees();
+
+   // Send AJAX GET request with JavaScript
+   function loadEmployees() {
+      var xhttp = new XMLHttpRequest();
+
+      // Set GET method and ajax file path with parameter
+      xhttp.open("GET", "ajaxfile.php?request=1", true);
+
+      // Content-type
+      xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+      // call on request changes state
+      xhttp.onreadystatechange = function() {
+         if (this.readyState == 4 && this.status == 200) {
+
+            // Parse this.responseText to JSON object
+            var response = JSON.parse(this.responseText);
+
+            // Select <table id='empTable'> <tbody>
+            var empTable =
+               document.getElementById("empTable").getElementsByTagName("tbody")[0];
+
+            // Empty the table <tbody>
+            empTable.innerHTML = "";
+
+            // Loop on response object
+            for (var key in response) {
+               if (response.hasOwnProperty(key)) {
+                  var val = response[key];
+
+                  // insert new row
+                  var NewRow = empTable.insertRow(0);
+                  var name_cell = NewRow.insertCell(0);
+                  var username_cell = NewRow.insertCell(1);
+                  var email_cell = NewRow.insertCell(2);
+
+                  name_cell.innerHTML = val['emp_name'];
+                  username_cell.innerHTML = val['salary'];
+                  email_cell.innerHTML = val['email'];
+
+               }
+            }
+
+         }
+      };
+
+      // Send request
+      xhttp.send();
+   }
+
+   $.ajax({
+      url: 'ajaxfile.php?request=1',
+      type: 'get',
+      success: function(response) {
+
+      }
+   });
+
+   // Send AJAX POST request with JavaScript (Insert new record)
+   function insertNewEmployee() {
+
+      var name = document.getElementById('txt_name').value;
+      var salary = document.getElementById('txt_salary').value;
+      var email = document.getElementById('txt_email').value;
+
+      if (name != '' && salary != '' && email != '') {
+
+         var data = {
+            name: name,
+            salary: salary,
+            email: email
+         };
+         var xhttp = new XMLHttpRequest();
+         // Set POST method and ajax file path
+         xhttp.open("POST", "ajaxfile.php", true);
+
+         // call on request changes state
+         xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+
+               var response = this.responseText;
+               if (response == 1) {
+                  alert("Insert successfully.");
+
+                  loadEmployees();
+               }
+            }
+         };
+
+         // Content-type
+         xhttp.setRequestHeader("Content-Type", "application/json");
+
+         // Send request with data
+         xhttp.send(JSON.stringify(data));
+      }
+
+   }
+
+   $.ajax({
+      url: 'ajaxfile.php',
+      type: 'post',
+      data: {
+         name: 'yogesh',
+         salary: 35000,
+         email: 'yogesh@makitweb.com'
+      },
+      success: function(response) {
+
+      }
+   });
+
+   $.ajax({
+      type: "POST",
+      url: "submission.php",
+      data: {
+         firstName: firstName,
+         lastName: lastName,
+         email: email,
+         message: message
+      },
+      cache: false,
+      success: function(data) {
+         alert(data);
+      },
+      error: function(xhr, status, error) {
+         console.error(xhr);
+      }
+   });
+
+
+
+   // Variable to hold request
+   var request;
+
+   // Bind to the submit event of our form
+   $("#foo").submit(function(event) {
+
+      // Prevent default posting of form - put here to work in case of errors
+      event.preventDefault();
+
+      // Abort any pending request
+      if (request) {
+         request.abort();
+      }
+      // setup some local variables
+      var $form = $(this);
+
+      // Let's select and cache all the fields
+      var $inputs = $form.find("input, select, button, textarea");
+
+      // Serialize the data in the form
+      var serializedData = $form.serialize();
+
+      // Let's disable the inputs for the duration of the Ajax request.
+      // Note: we disable elements AFTER the form data has been serialized.
+      // Disabled form elements will not be serialized.
+      $inputs.prop("disabled", true);
+
+      // Fire off the request to /form.php
+      request = $.ajax({
+         url: "/form.php",
+         type: "post",
+         data: serializedData
+      });
+
+      // Callback handler that will be called on success
+      request.done(function(response, textStatus, jqXHR) {
+         // Log a message to the console
+         console.log("Hooray, it worked!");
+      });
+
+      // Callback handler that will be called on failure
+      request.fail(function(jqXHR, textStatus, errorThrown) {
+         // Log the error to the console
+         console.error(
+            "The following error occurred: " +
+            textStatus, errorThrown
+         );
+      });
+
+      // Callback handler that will be called regardless
+      // if the request failed or succeeded
+      request.always(function() {
+         // Reenable the inputs
+         $inputs.prop("disabled", false);
+      });
+
+   });
+</script>
+
+<form id="foo">
+   <label for="bar">A bar</label>
+   <input id="bar" name="bar" type="text" value="" />
+
+   <input type="submit" value="Send" />
+</form>

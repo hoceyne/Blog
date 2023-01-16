@@ -1,0 +1,187 @@
+
+body{
+    padding: 0px;
+    margin: 0px;
+    font-family: 'Noto', sans-serif;
+    background-color: rgb(245, 244, 244);
+}
+input, button, a,textarea { border:none;text-decoration: none; background: none;} 
+
+.modal{
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 2;
+    width: 100%;
+    height: 100vh;
+
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content{
+    background: white;
+    border: 1px solid rgb(27, 54, 79);
+    border-radius: 10px;
+    box-shadow: 3px 3px 2px rgb(51, 68, 82);
+    display: flex;
+    flex-direction:column ;
+    align-items: end;
+    padding: 50px;
+}
+form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 600px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+input{
+    width: 100%;
+    height: 30px;
+    padding: 3px;
+    border:1px solid rgb(109, 124, 135);
+    border-radius: 3px;
+    margin: 10px 0px 10px 0px;
+}
+input:focus{
+    border: none;
+    outline: none;
+    border-radius: 0px;
+    border-bottom:2px solid rgb(5, 45, 74);
+}
+textarea{
+    width: 100%;
+    min-height: 70px;
+    padding: 3px;
+    border: 1px solid rgb(109, 124, 135);
+    border-radius: 3px;
+    margin: 10px 0px 10px 0px;
+}
+textarea:focus{
+    border: none;
+    outline: none;
+    border-radius: 0px;
+    border-bottom:2px solid rgb(5, 45, 74);
+}
+input[type=submit],input[type=button],button{
+    width:fit-content;
+    margin: 0px 10px 0px 10px;
+    padding: 5px 10px 5px 10px;
+    background-color: rgb(255, 255, 255);
+    color: rgb(9, 40, 59);
+    border: 3px solid  rgb(9, 40, 59);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border-radius: 3px;
+
+}
+input[type=submit]:hover,input[type=button]:hover,button:hover{
+    cursor: pointer;
+    background-color: rgb(9, 40, 59);
+    color: rgb(255, 255, 255);
+    border: 3px solid  rgb(9, 40, 59);
+}
+label{
+    font-weight:400 ;
+    text-transform: capitalize;
+    font-size: larger;
+    width: 100%;
+}
+#close{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 25px;
+    height:25px;
+    font-size: larger;
+    color: red;
+    font-weight: 500;
+    border: 2px solid red;
+    border-radius: 3px;
+    cursor: pointer;
+}
+#close:hover{
+    color: white;
+    background-color: red;
+    border: 2px solid red;
+}
+nav{
+    width: 100%;
+    height: 50px;
+    top: 0px;
+    background-color: white;
+    left: 0px;
+    position: fixed;
+    display: flex;
+    align-items: center;
+    z-index: 1;
+    justify-content: space-around;
+    box-shadow: 2px 2px 3px rgba(11, 31, 57, 0.579);
+}
+nav div{
+    display: flex;
+    flex-direction: row;
+}
+a{
+    pointer-events: all;
+    cursor: pointer;
+}
+.main {
+    position: relative;
+    margin-top: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+.container{
+    width: 700px;
+    display: flex;
+    flex-direction: column;
+}
+
+.heading{
+    font-size: 52px;
+    font-weight: 900;
+}
+.row{
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    height: fit-content;
+    justify-content: space-between;
+    align-items: center;
+}
+.action a{
+    margin: 10px;
+}
+.card{
+    padding: 20px;
+    background-color: white;
+    border-bottom: 2px solid rgb(5, 45, 74);
+    border-radius: 5px;
+    margin: 10px 0px 10px 0px;
+    box-shadow: 2px 2px 3px rgb(5, 45, 74);
+}
+.login-form{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.login-form form{
+    background: white;
+    border: 1px solid rgb(27, 54, 79);
+    border-radius: 10px;
+    box-shadow: 3px 3px 2px rgb(51, 68, 82);
+    display: flex;
+    flex-direction:column ;
+    align-items: end;
+    padding: 50px;
+}
+
